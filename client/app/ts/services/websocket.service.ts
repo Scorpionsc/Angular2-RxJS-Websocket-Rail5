@@ -13,8 +13,6 @@ export class WebSocketService {
 
     opened: Subject<boolean> = new Subject();
 
-    constructor(){}
-
     sendMessage( message:string ):void{
         this.ws.next(message);
     }
