@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
-import { Subject, Observable }    from 'rxjs/Rx';
+import {Subject, Observable, Subscription}    from 'rxjs/Rx';
 import { WebSocketSubject } from "rxjs/observable/dom/WebSocketSubject";
 
 @Injectable()
 export class WebSocketService {
 
-    private ws: any;
+    private ws: WebSocketSubject<Object>;
 
-    private socket: WebSocketSubject<MessageEvent>;
+    private socket: Subscription;
 
     message: Subject<Object> = new Subject();
 
@@ -24,6 +24,8 @@ export class WebSocketService {
 
         this.ws = Observable.webSocket('ws://localhost:3000/cable');
 
+        console.log( this.ws.constructor.name );
+
         this.socket = this.ws.subscribe({
             next: (data:MessageEvent) => {
                 if( data[ 'type' ] == 'welcome' ){
@@ -31,7 +33,7 @@ export class WebSocketService {
                 }
                 this.message.next( data );
             },
-            error: (err:Object) => {
+            error: () => {
 
                 self.opened.next( false );
                 this.message.next( { type: 'closed' } );
@@ -52,8 +54,7 @@ export class WebSocketService {
     }
 
     public close():void{
-        this.socket.complete();
-
+        this.ws.complete();
     }
 
 }
