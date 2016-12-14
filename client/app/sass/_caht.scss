@@ -1,0 +1,48 @@
+.chat{
+	padding: 40px;
+
+	h1{
+		margin-bottom: 10px;
+		font-size: 30px;
+	}
+
+	ul{
+		background: #d0f1f6;
+		margin-bottom: 20px;
+	}
+	&__item {
+		position: relative;
+		padding: 20px;
+
+		&:nth-child(odd){
+			background: #d2f6c2;
+
+		}
+		
+	}
+	&__title {
+		font-size: 20px;
+		margin-bottom: 10px;
+	}
+	&__date {
+		font-size: 14px;
+		color: #a3a3a3;
+		position: absolute;
+		top: 20px;
+		right: 20px;
+	}
+
+	fieldset {
+		margin-bottom: 10px;
+	}
+	input[type='text'] {
+		border: 1px solid #000;
+		height: 40px;
+		width: 200px;
+	}
+	textarea {
+		border: 1px solid #000;
+		height: 100px;
+		width: 200px;
+	}
+}

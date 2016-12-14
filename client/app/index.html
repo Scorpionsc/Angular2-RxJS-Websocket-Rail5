@@ -1,0 +1,25 @@
+<html>
+<head>
+    <title>Angular 2 QuickStart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="app/css/index.min.css">
+    <!-- 1. Load libraries -->
+
+    <!-- IE required polyfills, in this exact order -->
+    <script src="app/js/vendors/shim.min.js"></script>
+
+    <script src="app/js/vendors/zone.js"></script>
+    <script src="app/js/vendors/Reflect.js"></script>
+    <script src="app/js/vendors/system.src.js"></script>
+
+
+    <script src="app/js/vendors/system.config.js"></script>
+    <script>
+        System.import('app').catch(function(err){ console.error(err); });
+    </script>
+</head>
+<!-- 3. Display the application -->
+<body>
+<my-app>Loading...</my-app>
+</body>
+</html>

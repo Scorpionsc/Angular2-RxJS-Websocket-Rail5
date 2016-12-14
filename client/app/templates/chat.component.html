@@ -1,0 +1,34 @@
+<div class="chat">
+    <h1>Chat</h1>
+
+    <ul *ngIf="messages.length">
+        <li class="chat__item" *ngFor="let message of messages">
+            <h2 class="chat__title">{{ message.name }}</h2> <time class="chat__date">{{ timestamp_to_date( message.created_at ) }}</time>
+
+            <div class="chat__text">{{ message.text }}</div>
+        </li>
+    </ul>
+
+    <form action="#" (ngSubmit)="onSubmit()" #newMessage="ngForm">
+
+        <fieldset>
+            <input type="text" required
+                   [(ngModel)]="newMessageData.name"
+                   name="message_name"
+                   #message_name="ngModel" >
+        </fieldset>
+
+        <fieldset>
+
+            <textarea type="hidden" required
+                      [(ngModel)]="newMessageData.text"
+                      name="text"
+                      #message_text="ngModel"></textarea>
+        </fieldset>
+
+
+        <button type="submit" class="btn" [disabled]="!newMessage.form.valid">Apply</button>
+
+    </form>
+
+</div>
