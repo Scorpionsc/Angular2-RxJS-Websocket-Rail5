@@ -1,31 +1,36 @@
-import { Injectable } from "@angular/core";
-import {Subject, Observable, Subscription}    from 'rxjs/Rx';
-import { WebSocketSubject } from "rxjs/observable/dom/WebSocketSubject";
+import { Injectable }                           from "@angular/core";
+import { Subject, Observable, Subscription }    from 'rxjs/Rx';
+import { WebSocketSubject }                     from "rxjs/observable/dom/WebSocketSubject";
 
 @Injectable()
 export class WebSocketService {
 
     private ws: WebSocketSubject<Object>;
-
     private socket: Subscription;
+    private url: string;
 
-    message: Subject<Object> = new Subject();
+    public message: Subject<Object> = new Subject();
+    public opened: Subject<boolean> = new Subject();
 
-    opened: Subject<boolean> = new Subject();
-
-    sendMessage( message:string ):void{
-        this.ws.next(message);
+    public close():void{
+        this.socket.unsubscribe();
+        this.ws.complete();
     }
 
-    public start():void{
+    public sendMessage( message:string ):void{
+        this.ws.next( message );
+    }
+
+    public start( url: string ):void{
         let self = this;
 
-        this.ws = Observable.webSocket('ws://localhost:3000/cable');
+        this.url = url;
 
-        console.log( this.ws.constructor.name );
+        this.ws = Observable.webSocket( this.url );
 
-        this.socket = this.ws.subscribe({
-            next: (data:MessageEvent) => {
+        this.socket = this.ws.subscribe( {
+
+            next: ( data:MessageEvent ) => {
                 if( data[ 'type' ] == 'welcome' ){
                     self.opened.next( true );
                 }
@@ -39,20 +44,16 @@ export class WebSocketService {
                 self.socket.unsubscribe();
 
                 setTimeout( () => {
-                    self.start();
+                    self.start( self.url );
                 }, 1000 );
 
             },
             complete: () => {
                 this.message.next( { type: 'closed' } );
             }
-        });
 
+        } );
 
-    }
-
-    public close():void{
-        this.ws.complete();
     }
 
 }
